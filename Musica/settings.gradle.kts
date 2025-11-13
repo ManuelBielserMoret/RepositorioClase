@@ -19,6 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Practica_5_listas"
-include(":app")
+rootProject.name = "ReproductorMusica"
 include(":app")
