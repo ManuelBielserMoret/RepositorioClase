@@ -27,7 +27,7 @@
         tools:layout_editor_absoluteX="176dp" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/BTStop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="49dp"
@@ -36,7 +36,7 @@
         tools:layout_editor_absoluteY="394dp" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/BTPlay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="49dp"
@@ -65,7 +65,7 @@
         app:layout_constraintTop_toBottomOf="@+id/seekbar" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/TVFinal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="49dp"
