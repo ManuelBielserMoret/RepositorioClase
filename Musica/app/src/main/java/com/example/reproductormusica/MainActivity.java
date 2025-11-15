@@ -13,8 +13,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.sql.Struct;
-
 public class MainActivity extends AppCompatActivity {
 
     private MediaPlayer mediaPlayer;
@@ -46,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        mediaPlayer = MediaPlayer.create(this, R.raw.bruno_mars_song);
         btnPlay = findViewById(R.id.btnPlay);
         btnPause = findViewById(R.id.btnPause);
         tvNombreCancion = findViewById(R.id.tvNombreCancion);
@@ -54,24 +51,58 @@ public class MainActivity extends AppCompatActivity {
         tvFinal = findViewById(R.id.tvFinal);
         seekBar = findViewById(R.id.seekbar);
 
-        tvNombreCancion.setText("Bruno Mars - That's what I like");
+        tvNombreCancion.setText("Michael Jackson - Billie Jean");
 
-        btnPlay.setOnClickListener(v -> {
-            if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
-                mediaPlayer.start();
-                handler.post(actualizarTiempo);
-            }
-        });
-        btnPause.setOnClickListener(v -> {
-            if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-                mediaPlayer.pause();
-                handler.removeCallbacks(actualizarTiempo);
-            }
-        });
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        mediaPlayer = MediaPlayer.create(this, R.raw.michael_jackson_billie_jean);
+        if (mediaPlayer != null) {
+            mediaPlayer.setOnCompletionListener(mp -> {
+                if (seekBar != null) {
+                    seekBar.setMax(mediaPlayer.getDuration());
+                    int duracionTotal = mediaPlayer.getDuration();
+                    int minutos = (duracionTotal / 1000) / 60;
+                    int segundos = (duracionTotal / 1000) % 60;
+                    String tiempoFinal = String.format("%02d:%02d", minutos, segundos);
+                    tvFinal.setText(tiempoFinal);
+                }
+            });
+
+            btnPlay.setOnClickListener(v -> {
+                if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
+                    mediaPlayer.start();
+                    handler.post(actualizarTiempo);
+                }
+            });
+
+            btnPause.setOnClickListener(v -> {
+                if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                    mediaPlayer.pause();
+                    handler.removeCallbacks(actualizarTiempo);
+                }
+            });
+        } else {
+            tvNombreCancion.setText("No se pudo cargar la canción");
+        }
+
+        if (seekBar != null) {
+            seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    if (fromUser && mediaPlayer != null) {
+                        mediaPlayer.seekTo(progress);
+                    }
+                }
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                }
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                }
+            });
+        }
     }
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v,insets)->
+        Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+        v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+        return insets;
+    });
 }
