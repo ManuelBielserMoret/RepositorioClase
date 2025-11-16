@@ -1,5 +1,6 @@
 package com.example.reproductormusica;
 
+import android.media.SoundPool;
 import android.os.Bundle;
 
 import android.media.MediaPlayer;
@@ -14,7 +15,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
-
     private MediaPlayer mediaPlayer;
     private SeekBar seekBar;
     private Button btnPlay;
@@ -23,6 +23,11 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvActual;
     private TextView tvFinal;
     private Handler handler = new Handler();
+    private SoundPool SoundPool;
+    private int idSonidoCounter;
+    private int idSonidoLevelUp;
+    private int idSonidoBrawlStars;
+    private int idSonidoLoading;
     private Button btnCounter;
     private Button btnlevelUp;
     private Button btnBrawlStars;
@@ -54,10 +59,6 @@ public class MainActivity extends AppCompatActivity {
         tvActual = findViewById(R.id.tvActual);
         tvFinal = findViewById(R.id.tvFinal);
         seekBar = findViewById(R.id.seekbar);
-        btnCounter = findViewById(R.id.btnCounter);
-        btnlevelUp = findViewById(R.id.btnlevelUp);
-        btnBrawlStars = findViewById(R.id.btnBrawlStars);
-        btnLoading = findViewById(R.id.btnLoading);
 
         //Ejercicio 1. Reproductor de música
         tvNombreCancion.setText("Michael Jackson - Billie Jean");
@@ -109,23 +110,28 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-
         //Ejercicio 2. Sonidos con SoundPool
+        btnCounter = findViewById(R.id.btnCounter);
+        btnlevelUp = findViewById(R.id.btnlevelUp);
+        btnBrawlStars = findViewById(R.id.btnBrawlStars);
+        btnLoading = findViewById(R.id.btnLoading);
+        SoundPool = new SoundPool.Builder().setMaxStreams(5).build();
+        idSonidoCounter = SoundPool.load(this, R.raw.bomba_counter, 1);
+        idSonidoLevelUp = SoundPool.load(this, R.raw.level_up, 1);
+        idSonidoBrawlStars = SoundPool.load(this, R.raw.brawl_stars, 1);
+        idSonidoLoading = SoundPool.load(this, R.raw.loading_si, 1);
+
         btnCounter.setOnClickListener(v -> {
-            mediaPlayer = MediaPlayer.create(this, R.raw.bomba_counter);
-            mediaPlayer.start();
+            SoundPool.play(idSonidoCounter, 1, 1, 0, 0, 1);
         });
         btnlevelUp.setOnClickListener(v -> {
-            mediaPlayer = MediaPlayer.create(this, R.raw.level_up);
-            mediaPlayer.start();
+            SoundPool.play(idSonidoLevelUp, 1, 1, 0, 0, 1);
         });
         btnBrawlStars.setOnClickListener(v -> {
-            mediaPlayer = MediaPlayer.create(this, R.raw.brawl_stars);
-            mediaPlayer.start();
+            SoundPool.play(idSonidoBrawlStars, 1, 1, 0, 0, 1);
         });
         btnLoading.setOnClickListener(v -> {
-            mediaPlayer = MediaPlayer.create(this, R.raw.loading_si);
-            mediaPlayer.start();
+            SoundPool.play(idSonidoLoading, 1, 1, 0, 0, 1);
         });
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
