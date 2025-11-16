@@ -38,12 +38,12 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
         btnPlay = findViewById(R.id.btnPlay);
         btnPause = findViewById(R.id.btnPause);
         tvNombreCancion = findViewById(R.id.tvNombreCancion);
@@ -54,16 +54,17 @@ public class MainActivity extends AppCompatActivity {
         tvNombreCancion.setText("Michael Jackson - Billie Jean");
 
         mediaPlayer = MediaPlayer.create(this, R.raw.michael_jackson_billie_jean);
+
         if (mediaPlayer != null) {
-            mediaPlayer.setOnCompletionListener(mp -> {
+            mediaPlayer.setOnPreparedListener(mp -> {
                 if (seekBar != null) {
                     seekBar.setMax(mediaPlayer.getDuration());
-                    int duracionTotal = mediaPlayer.getDuration();
-                    int minutos = (duracionTotal / 1000) / 60;
-                    int segundos = (duracionTotal / 1000) % 60;
-                    String tiempoFinal = String.format("%02d:%02d", minutos, segundos);
-                    tvFinal.setText(tiempoFinal);
                 }
+                int duracionTotal = mediaPlayer.getDuration();
+                int minutos = (duracionTotal / 1000) / 60;
+                int segundos = (duracionTotal / 1000) % 60;
+                String tiempoFinal = String.format("%02d:%02d", minutos, segundos);
+                tvFinal.setText(tiempoFinal);
             });
 
             btnPlay.setOnClickListener(v -> {
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         } else {
-            tvNombreCancion.setText("No se pudo cargar la canción");
+            tvNombreCancion.setText("Error: No se pudo cargar la canción");
         }
 
         if (seekBar != null) {
@@ -99,10 +100,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
     }
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v,insets)->
-        Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-        v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-        return insets;
-    });
 }
