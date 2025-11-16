@@ -23,6 +23,10 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvActual;
     private TextView tvFinal;
     private Handler handler = new Handler();
+    private Button btnCounter;
+    private Button btnlevelUp;
+    private Button btnBrawlStars;
+    private Button btnLoading;
     private Runnable actualizarTiempo = new Runnable() {
         @Override
         public void run() {
@@ -50,7 +54,12 @@ public class MainActivity extends AppCompatActivity {
         tvActual = findViewById(R.id.tvActual);
         tvFinal = findViewById(R.id.tvFinal);
         seekBar = findViewById(R.id.seekbar);
+        btnCounter = findViewById(R.id.btnCounter);
+        btnlevelUp = findViewById(R.id.btnlevelUp);
+        btnBrawlStars = findViewById(R.id.btnBrawlStars);
+        btnLoading = findViewById(R.id.btnLoading);
 
+        //Ejercicio 1. Reproductor de música
         tvNombreCancion.setText("Michael Jackson - Billie Jean");
 
         mediaPlayer = MediaPlayer.create(this, R.raw.michael_jackson_billie_jean);
@@ -100,6 +109,24 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+
+        //Ejercicio 2. Sonidos con SoundPool
+        btnCounter.setOnClickListener(v -> {
+            mediaPlayer = MediaPlayer.create(this, R.raw.bomba_counter);
+            mediaPlayer.start();
+        });
+        btnlevelUp.setOnClickListener(v -> {
+            mediaPlayer = MediaPlayer.create(this, R.raw.level_up);
+            mediaPlayer.start();
+        });
+        btnBrawlStars.setOnClickListener(v -> {
+            mediaPlayer = MediaPlayer.create(this, R.raw.brawl_stars);
+            mediaPlayer.start();
+        });
+        btnLoading.setOnClickListener(v -> {
+            mediaPlayer = MediaPlayer.create(this, R.raw.loading_si);
+            mediaPlayer.start();
+        });
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
